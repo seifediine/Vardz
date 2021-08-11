@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import config from 'config'
+const mongoose = require('mongoose')
+const config = require('config')
 
 // Get the mongoURI value from the config file
 const db = config.get('mongoURI')
@@ -20,4 +20,4 @@ const connectDB = async () => {
   }
 }
 
-export default connectDB
+module.exports = connectDB
