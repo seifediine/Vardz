@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://Seifeddine:Pinazza_781227@vardz.yjgpt.mongodb.net/Vardz?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://Seifeddine:Pinazza_781227@vardz.yjgpt.mongodb.net/Vardz?retryWrites=true&w=majority",
+  "jwtSecret": "Pinazza_781227"
 }
