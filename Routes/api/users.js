@@ -2,6 +2,12 @@ const express = require('express')
 const router = express.Router()
 // Bring in Express Validator (check for documentaion at: https://express-validator.github.io/docs/)
 const { body, validationResult } = require('express-validator')
+// Bring in User model
+const User = require('../../models/User')
+// Bring in gravatar
+const gravatar = require('gravatar')
+// Bring in bcrypt
+const bcrypt = require('bcryptjs')
 
 // @route:      POST /api/users
 // Description: Register a new user
@@ -20,13 +26,55 @@ router.post(
       'Please enter a password with 6 or more characters'
     ).isLength({ min: 6 }),
   ],
-  (req, res) => {
+  async (req, res) => {
     // Check for errors
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
-    res.send('User Route')
+
+    // Destructure the request body
+    const { name, email, password } = req.body
+
+    try {
+      // Check if user already exists
+      let user = await User.findOne({ email })
+
+      if (user) {
+        // match the same type of error response from express-validator which is an array,
+        // so we can use the same error message on the client
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User already exists' }] })
+      }
+
+      // Get users gravatar
+      const avatar = gravatar.url(email, {
+        s: '200',
+        r: 'pg',
+        d: 'mm',
+      })
+
+      // Create a new instance of User (this doesn't save the user!)
+      user = new User({
+        name,
+        email,
+        avatar,
+        password,
+      })
+
+      // Encrypt the password
+      const salt = await bcrypt.genSalt(10)
+      user.password = await bcrypt.hash(password, salt)
+
+      // Save the user
+      await user.save()
+
+      res.send('User Registred')
+    } catch (err) {
+      console.error(err.message)
+      res.status(500).send('Server Error')
+    }
   }
 )
 
