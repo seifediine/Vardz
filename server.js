@@ -8,7 +8,8 @@ const app = express()
 // Connect to database
 connectDB()
 
-const PORT = process.env.PORT || 5000
+// Initialize middleware
+app.use(express.json({ extended: false }))
 
 app.get('/', (req, res) => res.send('API Running'))
 
@@ -18,6 +19,9 @@ app.use('/api/auth', require('./routes/api/auth'))
 app.use('/api/profile', require('./routes/api/profile'))
 app.use('/api/posts', require('./routes/api/posts'))
 
+const PORT = process.env.PORT || 5000
+
+// Start server
 app.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`.magenta.bold)
 })
