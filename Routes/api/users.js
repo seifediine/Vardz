@@ -81,6 +81,7 @@ router.post(
         },
       }
 
+      // Get the secret key and sign the token
       jwt.sign(
         payload,
         config.get('jwtSecret'),
