@@ -209,7 +209,7 @@ router.put(
 )
 
 // @route:      DELETE /api/profile/experience/exp_id
-// Desc:        Delete rxperience from profile
+// Desc:        Delete experience from profile
 // Access:      Private
 router.delete('/experience/:exp_id', auth, async (req, res) => {
   try {
@@ -220,6 +220,76 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
       .indexOf(req.params.exp_id)
     // Remove experience
     profile.experience.splice(removeIndex, 1)
+    // Save profile
+    await profile.save()
+    // Return json data
+    res.json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route:      PUT /api/profile/education
+// Description: Add profile education
+// Access:      Private
+router.put(
+  '/education',
+  [
+    auth,
+    [
+      body('school', 'School is required').not().isEmpty(),
+      body('degree', 'Degree is required').not().isEmpty(),
+      body('fieldofstudy', 'Field of Study is required').not().isEmpty(),
+      body('from', 'From date is required').not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { school, degree, fieldofstudy, from, to, current, description } =
+      req.body
+
+    const newEducation = {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    }
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id })
+      // unshift to the array instead of push to show newest experience first
+      profile.education.unshift(newEducation)
+      // Save profile
+      await profile.save()
+      // Return json data
+      res.json(profile)
+    } catch (err) {
+      console.error(err.message)
+      res.status(500).send('Server Error')
+    }
+  }
+)
+
+// @route:      DELETE /api/profile/education/exp_id
+// Desc:        Delete education from profile
+// Access:      Private
+router.delete('/education/:edu_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id })
+    // Get remove index
+    const removeIndex = profile.education
+      .map((item) => item._id)
+      .indexOf(req.params.edu_id)
+    // Remove experience
+    profile.education.splice(removeIndex, 1)
     // Save profile
     await profile.save()
     // Return json data
