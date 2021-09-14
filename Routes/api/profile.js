@@ -161,4 +161,51 @@ router.delete('/', auth, async (req, res) => {
   }
 })
 
+// @route:      PUT /api/profile/experience
+// Description: Add profile experience
+// Access:      Private
+router.put(
+  '/experience',
+  [
+    auth,
+    [
+      body('title', 'Title is required').not().isEmpty(),
+      body('company', 'Company is required').not().isEmpty(),
+      body('from', 'From date is required').not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { title, company, location, from, to, current, description } =
+      req.body
+
+    const newExperience = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    }
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id })
+      // unshift to the array instead of push to show newest experience first
+      profile.experience.unshift(newExperience)
+      // Save profile
+      await profile.save()
+      // Return json data
+      res.json(profile)
+    } catch (err) {
+      console.error(err.message)
+      res.status(500).send('Server Error')
+    }
+  }
+)
+
 module.exports = router
