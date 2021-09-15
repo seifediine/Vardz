@@ -1,6 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://Seifeddine:Pinazza_781227@vardz.yjgpt.mongodb.net/Vardz?retryWrites=true&w=majority",
-  "jwtSecret": "Pinazza_781227",
-  "githubClientId": "90245dae612d9bce4751",
-  "githubClientSecret": "43a16ca313203087c424e1724c4e7faec5b9525a"
-}

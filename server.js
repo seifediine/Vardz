@@ -1,6 +1,9 @@
 const express = require('express')
+const dotenv = require('dotenv')
 const connectDB = require('./config/db')
 const colors = require('colors')
+
+dotenv.config()
 
 // Initialize express app
 const app = express()
@@ -23,5 +26,8 @@ const PORT = process.env.PORT || 5000
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server Running on port ${PORT}`.magenta.bold)
+  console.log(
+    `Server Running in ${process.env.NODE_ENV} mode on port ${PORT}`.magenta
+      .bold
+  )
 })
