@@ -3,11 +3,12 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const auth = require('../../middleware/auth')
 const jwt = require('jsonwebtoken')
-const config = require('config')
+const dotenv = require('dotenv')
 const { body, validationResult } = require('express-validator')
 
 const User = require('../../models/User')
 
+dotenv.config()
 // @route:      GET /api/auth
 // Description: Auth Route
 // Access:      Public
@@ -73,7 +74,7 @@ router.post(
       // Get the secret key and sign the token
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.JWT_SECRET,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err

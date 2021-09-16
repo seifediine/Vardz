@@ -11,7 +11,9 @@ const bcrypt = require('bcryptjs')
 // Bring in JWT
 const jwt = require('jsonwebtoken')
 
-const config = require('config')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 // @route:      POST /api/users
 // Description: Register a new user
@@ -84,7 +86,7 @@ router.post(
       // Get the secret key and sign the token
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.JWT_SECRET,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err

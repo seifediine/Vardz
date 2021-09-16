@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
-
+dotenv.config()
 module.exports = function (req, res, next) {
   // Get token from the header
   const token = req.header('x-auth-token') // x-auth-token is the header key that we send along
