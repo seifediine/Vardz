@@ -154,6 +154,7 @@ img {
   opacity: 0.9;
   background: var(--light-color);
   color: #333;
+  border-radius: 7px;
 }
 
 .btn-primary,
@@ -184,16 +185,18 @@ img {
 .bg-danger,
 .badge-danger,
 .alert-danger {
-  background: var(--danger-color);
-  color: #fff;
+  background: #ffd9d8;
+  border: solid 1px #ff0800;
+  color: #ff0800;
 }
 
 .btn-success,
 .bg-success,
 .badge-success,
 .alert-success {
-  background: var(--success-color);
-  color: #fff;
+  background: #deffe6;
+  border: solid 1px #28a745;
+  color: #28a745;
 }
 
 .btn-white,
