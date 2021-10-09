@@ -9,3 +9,7 @@ export const REGISTER_FAIL = 'REGISTER_FAIL'
 // Load a User & Set Auth Token
 export const USER_LOADED = 'USER_LOADED'
 export const AUTH_ERROR = 'AUTH_ERROR'
+
+// Login Constants
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAIL = 'LOGIN_FAIL'
